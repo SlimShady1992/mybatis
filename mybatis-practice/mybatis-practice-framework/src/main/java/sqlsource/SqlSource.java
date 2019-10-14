@@ -5,4 +5,5 @@ package sqlsource;
  */
 public interface SqlSource {
 
+  BoundSql getBoundSql(Object param);
 }

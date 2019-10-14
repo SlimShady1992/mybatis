@@ -1,6 +1,8 @@
 package dao;
 
 import po.User;
+import sqlsession.SqlSession;
+import sqlsession.SqlSessionFactory;
 
 /**
  * 持久层代码

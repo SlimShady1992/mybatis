@@ -1,10 +1,13 @@
+import config.Configuration;
+import config.XMLConfigParser;
 import dao.UserDao;
 import dao.UserDaoImpl;
 import java.io.InputStream;
-import javax.security.auth.login.Configuration;
 import org.dom4j.Document;
 import org.junit.Test;
 import po.User;
+import sqlsession.SqlSessionFactory;
+import sqlsession.SqlSessionFactoryBuilder;
 import utils.DocumentUtils;
 import utils.Resources;
 

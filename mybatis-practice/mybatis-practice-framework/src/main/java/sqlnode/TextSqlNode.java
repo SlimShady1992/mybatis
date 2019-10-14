@@ -1,11 +1,14 @@
-package com.kkb.mybatis.sqlnode;
+package sqlnode;
 
-import com.kkb.mybatis.sqlsource.DynamicContext;
-import com.kkb.mybatis.utils.GenericTokenParser;
-import com.kkb.mybatis.utils.OgnlUtils;
-import com.kkb.mybatis.utils.SimpleTypeRegistry;
-import com.kkb.mybatis.utils.TokenHandler;
+import sqlsource.DynamicContext;
+import utils.GenericTokenParser;
+import utils.OgnlUtils;
+import utils.SimpleTypeRegistry;
+import utils.TokenHandler;
 
+/**
+ * 处理有动态标签的sql
+ */
 public class TextSqlNode implements SqlNode {
 
   private String sqlText;
@@ -21,7 +24,6 @@ public class TextSqlNode implements SqlNode {
   public void apply(DynamicContext context) {
     TokenHandler tokenHandler = new BindingTokenParser(context);
     GenericTokenParser tokenParser = new GenericTokenParser("${", "}", tokenHandler);
-    // tokenParser.parse(sqlText)参数是未处理的，返回值是已处理的（没有${}）
     context.appendSql(tokenParser.parse(sqlText));
   }
 
@@ -32,11 +34,12 @@ public class TextSqlNode implements SqlNode {
     return false;
   }
 
-  private static class BindingTokenParser implements TokenHandler {
+  private class BindingTokenParser implements TokenHandler {
 
     private DynamicContext context;
 
-    public BindingTokenParser(DynamicContext context) {
+    public BindingTokenParser(
+        DynamicContext context) {
       this.context = context;
     }
 
@@ -47,10 +50,8 @@ public class TextSqlNode implements SqlNode {
     public String handleToken(String expression) {
       Object paramObject = context.getBindings().get("_parameter");
       if (paramObject == null) {
-        // context.getBindings().put("value", null);
         return "";
       } else if (SimpleTypeRegistry.isSimpleType(paramObject.getClass())) {
-        // context.getBindings().put("value", paramObject);
         return String.valueOf(paramObject);
       }
 
@@ -59,7 +60,5 @@ public class TextSqlNode implements SqlNode {
       String srtValue = value == null ? "" : String.valueOf(value);
       return srtValue;
     }
-
   }
-
 }
